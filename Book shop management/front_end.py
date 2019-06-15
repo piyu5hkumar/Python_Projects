@@ -31,7 +31,6 @@ def update_clicked():
     selected = all_books.get(t.ACTIVE)
     if(len(selected)>0):
         row_to_update=selected.split(',')
-        print(row_to_update)
         update_data(row_to_update)  
 
 def delete_clicked():

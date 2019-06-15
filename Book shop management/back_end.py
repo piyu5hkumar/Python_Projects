@@ -1,5 +1,6 @@
 import time
 import tkinter as t
+import tkinter.messagebox as message
 import sqlite3 as sq
 
 conn=sq.connect('book_store')
@@ -14,19 +15,15 @@ def fetch_db():
 
 def add_clicked():
     def insert_data():
-        message.delete('1.0',t.END)
         try:
             row=(t_val.get(),a_val.get(),int(y_val.get()),int(I_val.get()))
             curr.execute('INSERT INTO books VALUES (?,?,?,?)',row)
             conn.commit()
-            message.insert(t.END,"succesfully added")
-#             time.sleep(1.5)
-            popinsert.destroy()
+            message.showinfo('succesfull',"succesfully added")
         except:
-            message.grid(row=4,columnspan=4)
-            message.configure(bg='red')
-            message.insert(t.END,"some error occured")
-        
+            message.showinfo('error',"new book can't be added")
+        finally:
+            popinsert.destroy()
     
     popinsert=t.Tk()
     popinsert.title('Enter new details')
@@ -58,7 +55,6 @@ def add_clicked():
     final=t.Button(popinsert,text="ADD",command=insert_data)
     final.grid(row=3,columnspan=4)
     
-    message=t.Text(popinsert,width=10,height=1)
     popinsert.mainloop()
  
 
@@ -73,18 +69,18 @@ def update_data(selected):
                     isbn = ?
                     WHERE isbn = ?
                 ''',new_vals)
-            pop_update.destroy()
+            message.showinfo('succesfull',"succesfully updated")
         except:
-            message.grid(row=3,columnspan=4)
-            message.configure(bg='red')
-            message.delete('1.0',t.END)
-            message.insert('end','UPDATE ERROR')
+            
+            message.showinfo('error','UPDATE ERROR')
+        finally:
+            pop_update.destroy()
         
     old_isbn=selected[3]
     
     pop_update=t.Tk()
     pop_update.title('Edit your data')
-    print('here')
+
     title=t.Label(pop_update,text='TITLE')
     title.grid(row = 0,column=0)
     
@@ -116,8 +112,6 @@ def update_data(selected):
     
     update_val=t.Button(pop_update,text='UPDATE',command=update_db)
     update_val.grid(row=2,columnspan=4)
-    
-    message=t.Text(pop_update,width=15,height=1)
     
     
     pop_update.mainloop()
