@@ -9,7 +9,7 @@ curr=conn.cursor()
 curr.execute("SELECT * from books")
 all=curr.fetchall()
 
-print(all)
+# print(all)
 
 
 
