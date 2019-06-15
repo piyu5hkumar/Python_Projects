@@ -1,16 +1,17 @@
-import psycopg2 as sq
+import sqlite3 as sq
 try:
-    conn= sq.connect(database='book_store',user='piyu',password='1234',host='localhost')
-    cur=conn.cursor()
-    cur.execute('''
+    conn=sq.connect('book_store')
+    curr=conn.cursor()
+    curr.execute('''
     CREATE TABLE IF NOT EXISTS BOOKS
     (
-        title VARCHAR,
-        authors VARCHAR,
+        title TEXT,
+        authors TEXT,
         year INTEGER,
         isbn INTEGER PRIMARY KEY
     )
     ''')
+
     print('database created')
     conn.commit()
     conn.close()

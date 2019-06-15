@@ -1,6 +1,6 @@
-import psycopg2 as sq
+import sqlite3 as sq
 
-conn=sq.connect(database='book_store',user='piyu',password='1234',host='localhost')
+conn=sq.connect('book_store')
 cur=conn.cursor()
 
 some_books=[
@@ -11,6 +11,6 @@ some_books=[
             ('your name','makoto shinkai',2005,69542)
             ]
 
-cur.executemany('''INSERT INTO books VALUES (%s,%s,%s,%s);''',some_books)
+cur.executemany('''INSERT INTO books VALUES (?,?,?,?);''',some_books)
 conn.commit()
 print('done')

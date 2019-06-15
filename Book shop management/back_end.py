@@ -1,17 +1,24 @@
 import time
 import tkinter as t
-import psycopg2 as sq
-conn=sq.connect(database='book_store',user='piyu',password='1234',host='localhost')
+import sqlite3 as sq
+# from front_end import *
+
+
+conn=sq.connect('book_store')
 curr=conn.cursor()
+curr.execute("SELECT * from books")
+all=curr.fetchall()
+
+print(all)
 
 
 
-def insert():
+def add_clicked():
     def add():
         message.delete('1.0',t.END)
         try:
             row=(t_val.get(),a_val.get(),int(y_val.get()),int(I_val.get()))
-            curr.execute('INSERT INTO books VALUES (%s,%s,%s,%s)',row)
+            curr.execute('INSERT INTO books VALUES (?,?,?,?)',row)
             conn.commit()
             message.insert(t.END,"succesfully added")
 #             time.sleep(1.5)
