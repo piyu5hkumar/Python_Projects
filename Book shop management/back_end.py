@@ -23,6 +23,8 @@ def add_clicked():
 #             time.sleep(1.5)
             popinsert.destroy()
         except:
+            message.grid(row=4,columnspan=4)
+            message.configure(bg='red')
             message.insert(t.END,"some error occured")
         
     
@@ -57,7 +59,6 @@ def add_clicked():
     final.grid(row=3,columnspan=4)
     
     message=t.Text(popinsert,width=10,height=1)
-    message.grid(row=4,columnspan=4)
     popinsert.mainloop()
  
 
@@ -72,10 +73,12 @@ def update_data(selected):
                     isbn = ?
                     WHERE isbn = ?
                 ''',new_vals)
+            pop_update.destroy()
         except:
-            message.insert('end','55')
-            print('sorry')
-    
+            message.grid(row=3,columnspan=4)
+            message.configure(bg='red')
+            message.delete('1.0',t.END)
+            message.insert('end','UPDATE ERROR')
         
     old_isbn=selected[3]
     
@@ -114,10 +117,8 @@ def update_data(selected):
     update_val=t.Button(pop_update,text='UPDATE',command=update_db)
     update_val.grid(row=2,columnspan=4)
     
-    m=t.StringVar()
-    m.set("asdf")
-    message=t.Label(pop_update,textvariable=m)
-    message.grid(row=3,columnspan=4)
+    message=t.Text(pop_update,width=15,height=1)
+    
     
     pop_update.mainloop()
     conn.commit()

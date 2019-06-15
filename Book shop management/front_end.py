@@ -36,15 +36,10 @@ def update_clicked():
 
 def delete_clicked():
     isbn_to_del=(None,)
-    try:
-        selected = all_books.get(t.ACTIVE)
+    selected = all_books.get(t.ACTIVE)
+    if(len(selected)>0):
         isbn_to_del = (str(selected.split(',')[3]),)
         delete_data(isbn_to_del)
-    except:
-        print(isbn_to_del)
-        print('here')
-        delete_data(isbn_to_del) 
-
        
 win.title('Bookstore')
 all_books =t.Listbox(win,width=30)
