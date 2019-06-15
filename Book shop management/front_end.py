@@ -7,11 +7,12 @@ all=curr.fetchall()
 win = t.Tk()  
 
 def view_clicked(event):
+    all=fetch_db()
     all_books.delete('0','end')
     for b in all:
         b=(','.join(map(lambda i:str(i),b))).title()
-#         print(b)
         all_books.insert(t.END,b)
+
 
 def selected(event):
     a=all_books.get(t.ACTIVE)
@@ -25,7 +26,26 @@ def selected(event):
     y_val.insert(t.END,a[2])
     I_val.insert(t.END,a[3])
 
-      
+
+def update_clicked():
+    selected = all_books.get(t.ACTIVE)
+    if(len(selected)>0):
+        row_to_update=selected.split(',')
+        print(row_to_update)
+        update_data(row_to_update)  
+
+def delete_clicked():
+    isbn_to_del=(None,)
+    try:
+        selected = all_books.get(t.ACTIVE)
+        isbn_to_del = (str(selected.split(',')[3]),)
+        delete_data(isbn_to_del)
+    except:
+        print(isbn_to_del)
+        print('here')
+        delete_data(isbn_to_del) 
+
+       
 win.title('Bookstore')
 all_books =t.Listbox(win,width=30)
 all_books.bind('<Double-Button-1>',selected)
@@ -66,10 +86,10 @@ search_entry.grid(row=3,column=3)
 add_entry=t.Button(win,text='Add entry',width=15,command=add_clicked)
 add_entry.grid(row=4,column=3)
 
-update=t.Button(win,text='Update selected',width=15)
+update=t.Button(win,text='Update selected',width=15,command=update_clicked)
 update.grid(row=5,column=3)
 
-delete =t.Button(win,text='Delete selected',width=15)
+delete =t.Button(win,text='Delete selected',width=15,command=delete_clicked)
 delete.grid(row=6,column=3)
 
 win.mainloop()
