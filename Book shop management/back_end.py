@@ -13,6 +13,34 @@ def fetch_db():
     return all
 
 
+def search_clicked():
+    pop_search=t.Tk()
+    
+    results =t.Listbox(pop_search,width=30)
+    results.grid(row=0,columnspan=2,rowspan=5)
+    
+    s=t.StringVar(pop_search)
+    s.set('Search By')
+    dis=t.Label(pop_search,text=s.get())
+    dis.grid(row=0,column=3)
+    
+    def option_selected(*args):
+        drop_down_choice=t.Label(pop_search,text=var.get())
+        drop_down_choice.grid(row=1,column=4)
+        
+        to_search=t.Entry(pop_search)
+        to_search.grid(row=1,column=5)
+    choices=('title','authors','year','isbn')
+    var=t.StringVar()
+    var.set(choices[0])
+    var.trace('w',option_selected)
+    options=t.OptionMenu(pop_search,var,*choices)
+    options.grid(row=0,column=4)
+    
+    pop_search.mainloop()
+
+
+
 def add_clicked():
     def insert_data():
         try:

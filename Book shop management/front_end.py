@@ -74,7 +74,7 @@ view_all=t.Button(win,text='View All',width=15)
 view_all.bind("<Button-1>",view_clicked)
 view_all.grid(row=2,column=3)
 
-search_entry=t.Button(win,text='Search Entry',width=15)
+search_entry=t.Button(win,text='Search Entry',width=15,command=search_clicked)
 search_entry.grid(row=3,column=3)
 
 add_entry=t.Button(win,text='Add entry',width=15,command=add_clicked)
