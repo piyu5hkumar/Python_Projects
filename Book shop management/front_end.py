@@ -6,7 +6,7 @@ all=curr.fetchall()
 
 win = t.Tk()  
 
-def view_clicked(event):
+def view_clicked(event ): 
     all=fetch_db()
     all_books.delete('0','end')
     for b in all:
@@ -73,7 +73,7 @@ I_val.grid(row=1,column=3)
 view_all=t.Button(win,text='View All',width=15)
 view_all.bind("<Button-1>",view_clicked)
 view_all.grid(row=2,column=3)
-
+ 
 search_entry=t.Button(win,text='Search Entry',width=15,command=search_clicked)
 search_entry.grid(row=3,column=3)
 

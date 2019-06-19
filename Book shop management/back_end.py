@@ -3,7 +3,7 @@ import tkinter as t
 import tkinter.messagebox as message
 import sqlite3 as sq
 
-conn=sq.connect('book_store')
+conn=sq.connect('book_store' )
 curr=conn.cursor()
 
 # print(all)
@@ -31,8 +31,8 @@ def search_clicked():
         to_search=t.Entry(pop_search)
         to_search.grid(row=1,column=5)
     choices=('title','authors','year','isbn')
-    var=t.StringVar()
-    var.set(choices[0])
+    var=t.StringVar()  
+    var.set(choices[0]) 
     var.trace('w',option_selected)
     options=t.OptionMenu(pop_search,var,*choices)
     options.grid(row=0,column=4)
