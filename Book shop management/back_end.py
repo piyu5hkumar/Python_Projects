@@ -14,33 +14,54 @@ def fetch_db():
 
 
 def search_clicked():
+    def search_db(event):
+        where_value=var.get()
+        search_value=to_search.get()
+        search_value='%'+search_value+'%'
+        curr.execute('SELECT * FROM books WHERE {} LIKE ?'.format(where_value),(search_value,))
+        '''
+        we have used where value as place holder because if we pass it 
+        via tupple it was replacing where ___ with 'where_Value' i.e, with quotes which we don't want.
+        And the same scenario with like ___ ,but here we fixed it by concatenating % in front and back of
+        search_value
+        '''
+        rows_fetched=curr.fetchall()
+        
+        results.delete('0','end')
+        for row in rows_fetched:
+            row_to_show=(','.join(map(lambda i:str(i),row))).title()
+            results.insert(t.END,row_to_show)
+        
+        
     pop_search=t.Tk()
     
-    results =t.Listbox(pop_search,width=30)
-    results.grid(row=0,columnspan=2,rowspan=5)
     
-    s=t.StringVar(pop_search)
-    s.set('Search By')
-    dis=t.Label(pop_search,text=s.get())
-    dis.grid(row=0,column=3)
     
     ''' for option selected '''
     drop_down_choice=t.Label(pop_search)
     to_search=t.Entry(pop_search)
-    
+    s_button=t.Button(pop_search,text='search')
     def option_selected(*args):
         drop_down_choice.configure(text=var.get())
-        drop_down_choice.grid(row=1,column=4)
-        
-        
-        to_search.grid(row=1,column=5)
+        drop_down_choice.grid(row=1,column=5)
+        to_search.grid(row=1,column=6)
+        s_button.grid(row=2,column=6,columnspan=2)
+        s_button.bind('<Button-1>',search_db)
+    
+    results =t.Listbox(pop_search,width=60)
+    results.grid(row=0,columnspan=4,rowspan=5)
+    
+    s=t.StringVar(pop_search)
+    s.set('Search By')
+    dis=t.Label(pop_search,text=s.get())
+    dis.grid(row=0,column=5)    
         
     choices=('title','authors','year','isbn')
     var=t.StringVar()  
     var.set(choices[0]) 
     var.trace('w',option_selected)
     options=t.OptionMenu(pop_search,var,*choices)
-    options.grid(row=0,column=4)
+    options.grid(row=0,column=6)
     
     pop_search.mainloop()
 
