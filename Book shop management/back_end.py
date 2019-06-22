@@ -24,12 +24,17 @@ def search_clicked():
     dis=t.Label(pop_search,text=s.get())
     dis.grid(row=0,column=3)
     
+    ''' for option selected '''
+    drop_down_choice=t.Label(pop_search)
+    to_search=t.Entry(pop_search)
+    
     def option_selected(*args):
-        drop_down_choice=t.Label(pop_search,text=var.get())
+        drop_down_choice.configure(text=var.get())
         drop_down_choice.grid(row=1,column=4)
         
-        to_search=t.Entry(pop_search)
+        
         to_search.grid(row=1,column=5)
+        
     choices=('title','authors','year','isbn')
     var=t.StringVar()  
     var.set(choices[0]) 
