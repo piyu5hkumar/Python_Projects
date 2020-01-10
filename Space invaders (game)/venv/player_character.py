@@ -45,26 +45,31 @@ class MyBullet:
             self.Y += self.Y_change
             # print('bullet at', self.Y)
             SCREEN.blit(self.bulletImg, (self.X + 20, self.Y))
-            pygame.display.update()
+            # pygame.display.update()
         elif self.Y < 0:
             self.isShooted = False
             self.Y = 7 * (SCREEN_HEIGHT / 8) - 30
 
-    def is_collided(self, Xmin, Ymin):
-        Xmax = Xmin + 48
-        Ymax = Ymin + 48
-
-        if Xmin <= self.X and Xmax >= self.X and Ymin - self.Y == 0:
-            print("collison occur")
-            print("e Y",Ymin)
-            print("b Y",self.Y)
-
 
 BULLET = MyBullet()
 
+font = pygame.font.Font('freesansbold.ttf', 32)
 
-def is_collided(a, b, c):
-    pass
-# if math.sqrt(math.pow(a-c.X , 2)+math.pow(b-c.Y, 2)) == 0:
-#     print('collided')
-# if c.X>=a and c.X<=a+48 and
+
+def is_collided(A, B):
+    global font
+    distance = math.sqrt(math.pow(A[0] - B[0], 2) + math.pow(A[1] - B[1], 2))
+    score = font.render(str(distance), True, (255, 255, 255))
+    scoreX = font.render("x gap = " + str(A[0] - B[0]), True, (255, 255, 255))
+    bulletX = font.render("bullet x = " + str(B[0]), True, (255, 255, 255))
+    enemyX = font.render("enemy x = " + str(A[0]), True, (255, 255, 255))
+    SCREEN.blit(score, (0, 0))
+    SCREEN.blit(scoreX, (0, 20))
+    SCREEN.blit(bulletX, (0, 40))
+    SCREEN.blit(enemyX, (0, 60))
+    pygame.draw.line(SCREEN, (255, 0, 0), (A[0], A[1]), (B[0], B[1]))
+    if math.ceil(distance) == 24:
+        print("distance is ", distance)
+        return True
+    else:
+        return False
