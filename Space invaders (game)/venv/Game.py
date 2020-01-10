@@ -1,4 +1,5 @@
 import random
+from pygame import mixer
 from elements import *
 
 WELCOME_RUNNING = True
@@ -32,6 +33,8 @@ while RUNNING:
                 PLAYER.X_change = 0.5
             if event.key == pygame.K_SPACE:
                 if BULLET.isShooted == False:
+                    bulletSound = mixer.Sound('src/music/shoot.wav')
+                    bulletSound.play()
                     BULLET.X = PLAYER.X
                     BULLET.isShooted = True
                     BULLET.Y_change = -0.8

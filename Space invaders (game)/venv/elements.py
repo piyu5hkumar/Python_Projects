@@ -1,5 +1,6 @@
 import math
 import random
+from pygame import mixer
 from defaults import *
 
 GAMEOVER = False
@@ -86,6 +87,8 @@ class MyEnemy:
                 e.X_change = 0
             global GAMEOVER
             GAMEOVER = True
+            shipBlastSound = mixer.Sound('src/music/explosion.wav')
+            shipBlastSound.play()
         self.X += self.X_change
         SCREEN.blit(self.enemyImg, (self.X, self.Y))
 
@@ -109,6 +112,8 @@ def collision():
     global POINTS
     for e in ENEMYS:
         if isCollided((e.X + 24, e.Y + 24), (BULLET.X + 25, BULLET.Y)):
+            collisionSound = mixer.Sound('src/music/invaderkilled.wav')
+            collisionSound.play()
             BULLET.isShooted = False
             BULLET.Y = 7 * (SCREEN_HEIGHT / 8) - 30
             # print("collison")
