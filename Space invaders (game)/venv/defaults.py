@@ -1,0 +1,19 @@
+import pygame
+
+# initialize the pygame
+pygame.init()
+
+# create screen
+
+SCREEN_HEIGHT = 600
+SCREEN_WIDTH = 800
+
+SCREEN = pygame.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])  # pass a list
+
+# Title and Icon
+pygame.display.set_caption("space invaders by PIYU")
+icon = pygame.image.load('src/icon.png')
+pygame.display.set_icon(icon)
+
+# background
+backgroundImg = pygame.image.load('src/BG.png').convert()
