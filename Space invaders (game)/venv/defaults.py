@@ -17,3 +17,6 @@ pygame.display.set_icon(icon)
 
 # background
 backgroundImg = pygame.image.load('src/BG.png').convert()
+
+# boundary
+BOUNDARY_HEIGHT = 7 * (SCREEN_HEIGHT / 8) - 60
