@@ -7,6 +7,9 @@ pygame.init()
 
 SCREEN_HEIGHT = 600
 SCREEN_WIDTH = 800
+GAMEOVER = False
+text = pygame.font.Font('freesansbold.ttf', 32)
+POINTS = 0
 
 SCREEN = pygame.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])  # pass a list
 

@@ -32,28 +32,29 @@ while RUNNING:
             if event.key == pygame.K_RIGHT:
                 PLAYER.X_change = 0.5
             if event.key == pygame.K_SPACE:
-                if PLAYERBULLET.isShooted == False:
+                if PLAYER.BULLET.isShooted == False:
                     bulletSound = mixer.Sound('src/music/shoot.wav')
                     bulletSound.play()
-                    PLAYERBULLET.X = PLAYER.X
-                    PLAYERBULLET.isShooted = True
-                    PLAYERBULLET.Y_change = -0.8
+                    PLAYER.BULLET.X = PLAYER.X
+                    PLAYER.BULLET.isShooted = True
+                    PLAYER.BULLET.Y_change = -0.8
         if event.type == pygame.KEYUP:
             PLAYER.X_change = 0
     PLAYER.playerMovement()
     eMovement()
     eFire()
-    PLAYERBULLET.shoot()
-    collision()
+    PLAYER.shoot()
+    enemyHit()
+    PlayerHit()
 
     # pygame.draw.circle(SCREEN,(0,0,0),(int(BULLET.X)+ 25,int(BULLET.Y)),5)
     pygame.draw.line(SCREEN, (255, 0, 0), (0, BOUNDARY_HEIGHT), (SCREEN_WIDTH, BOUNDARY_HEIGHT), 10)
     if isGameOver():
-        print('the game should pause now')
+        # print('the game should pause now')
         SCREEN.blit(text.render("GAME OVER", True, (255, 0, 0)), (SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
         SCREEN.blit(text.render("FINAL SCORE :" + getPoints(), True, (255, 0, 0)), (SCREEN_WIDTH/2, (SCREEN_HEIGHT / 2)+30))
+        GameOverProcedure()
     else:
         score = text.render("SCORE : " + getPoints(), True, (255, 0, 0))
         SCREEN.blit(score, (0, 0))
     pygame.display.update()
-    # CLOCK.tick(360)
