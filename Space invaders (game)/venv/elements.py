@@ -40,7 +40,7 @@ class MyPlayer:
 PLAYER = MyPlayer()
 
 
-class MyBullet:
+class MyPlayerBullet:
     def __init__(self):
         self.bulletImg = pygame.image.load('src/bullet.png')  # .convert() 10*30
         self.X = 0
@@ -59,17 +59,60 @@ class MyBullet:
             self.Y = 7 * (SCREEN_HEIGHT / 8) - 30
 
 
-BULLET = MyBullet()
+PLAYERBULLET = MyPlayerBullet()
 
+
+class MyEnemyBullet:
+    def __init__(self):
+        self.img = pygame.image.load('src/enemy_fire.png')
+        self.X = 0
+        self.Y = 0
+        self.isShooted = False
 
 class MyEnemy:
     def __init__(self, enemy_number):
-        self.enemyImg = pygame.image.load('src/enemy' + str(enemy_number) + '_48x48.png')
+        self.img = pygame.image.load('src/enemy' + str(enemy_number) + '_48x48.png')
         self.X = random.randint(0, SCREEN_WIDTH - 50)
         self.Y = 1 * SCREEN_HEIGHT / 8
         self.X_change = 0.3
         self.Y_change = 50
+        self.BULLET = MyEnemyBullet()
+        self.isShooted = False
+        self.flag = 0
+        self.vertices = list()
         # print(self.enemyImg)
+    def calculate_points(self,p1,p2):
+        all = list()
+        factor = 0.1
+        x1, y1 = p1[0], p1[1]
+        x2, y2 = p2[0], p2[1]
+
+        m = (y2 - y1) / (x2 - x1)
+        xnew, ynew = x1, y1
+        i = 1
+        while ynew <= y2:
+            all.append((int(xnew), int(ynew)))
+            ynew = i * factor + y1
+            xnew = (ynew - y2) / m + x2
+            i += 1
+            print(xnew, ynew)
+        return all
+
+
+    def shoot(self):
+        if self.isShooted == False:
+            self.isShooted = True
+            p1 = (self.X + 24,self.Y + 48)
+            p2 = (PLAYER.X + 24, SCREEN_HEIGHT)
+            self.vertices = self.calculate_points(p1,p2)
+        else :
+            if self.flag < self.vertices.__len__():
+                SCREEN.blit(self.BULLET.img, (self.vertices[self.flag][0] - 8, self.vertices[self.flag][1] - 8))
+                self.flag += 1
+            else:
+                self.vertices = list()
+                self.flag = 0
+                self.isShooted = False
 
     def enemyMovement(self):
         if self.X < 0:
@@ -90,8 +133,7 @@ class MyEnemy:
             shipBlastSound = mixer.Sound('src/music/explosion.wav')
             shipBlastSound.play()
         self.X += self.X_change
-        SCREEN.blit(self.enemyImg, (self.X, self.Y))
-
+        SCREEN.blit(self.img, (self.X, self.Y))
 
 ENEMYS = list()
 for i in range(1, 5):
@@ -108,20 +150,22 @@ def eMovement():
         e.enemyMovement()
 
 
+def eFire():
+    for e in ENEMYS:
+        e.shoot()
 def collision():
     global POINTS
     for e in ENEMYS:
-        if isCollided((e.X + 24, e.Y + 24), (BULLET.X + 25, BULLET.Y)):
+        if isCollided((e.X + 24, e.Y + 24), (PLAYERBULLET.X + 25, PLAYERBULLET.Y)):
             collisionSound = mixer.Sound('src/music/invaderkilled.wav')
             collisionSound.play()
-            BULLET.isShooted = False
-            BULLET.Y = 7 * (SCREEN_HEIGHT / 8) - 30
+            PLAYERBULLET.isShooted = False
+            PLAYERBULLET.Y = 7 * (SCREEN_HEIGHT / 8) - 30
             # print("collison")
             e.X = 48
             e.Y = 1 * SCREEN_HEIGHT / 8
-            e.X_change = 0.1
+            e.X_change = 0.3
             POINTS += 1
-
 
 def getPoints():
     return str(POINTS)
@@ -150,5 +194,7 @@ def isCollided(A, B):
         return False
 
 
+
 def isGameOver():
     return GAMEOVER
+

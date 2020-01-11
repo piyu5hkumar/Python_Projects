@@ -2,6 +2,7 @@ import random
 from pygame import mixer
 from elements import *
 
+CLOCK = pygame.time.Clock()
 WELCOME_RUNNING = True
 wecomeImg = pygame.image.load('src/welcome.png')
 while WELCOME_RUNNING:
@@ -14,12 +15,11 @@ while WELCOME_RUNNING:
             WELCOME_RUNNING = False
 
     pygame.display.update()
-
 # print('BH', BOUNDARY_HEIGHT)
 RUNNING = True
 while RUNNING:
 
-    # screen.fill((0, 0, 0))
+    # SCREEN.fill((0, 0, 0))
     SCREEN.blit(backgroundImg, (0, 0))
 
     for event in pygame.event.get():
@@ -32,17 +32,18 @@ while RUNNING:
             if event.key == pygame.K_RIGHT:
                 PLAYER.X_change = 0.5
             if event.key == pygame.K_SPACE:
-                if BULLET.isShooted == False:
+                if PLAYERBULLET.isShooted == False:
                     bulletSound = mixer.Sound('src/music/shoot.wav')
                     bulletSound.play()
-                    BULLET.X = PLAYER.X
-                    BULLET.isShooted = True
-                    BULLET.Y_change = -0.8
+                    PLAYERBULLET.X = PLAYER.X
+                    PLAYERBULLET.isShooted = True
+                    PLAYERBULLET.Y_change = -0.8
         if event.type == pygame.KEYUP:
             PLAYER.X_change = 0
     PLAYER.playerMovement()
     eMovement()
-    BULLET.shoot()
+    eFire()
+    PLAYERBULLET.shoot()
     collision()
 
     # pygame.draw.circle(SCREEN,(0,0,0),(int(BULLET.X)+ 25,int(BULLET.Y)),5)
@@ -55,3 +56,4 @@ while RUNNING:
         score = text.render("SCORE : " + getPoints(), True, (255, 0, 0))
         SCREEN.blit(score, (0, 0))
     pygame.display.update()
+    # CLOCK.tick(360)
