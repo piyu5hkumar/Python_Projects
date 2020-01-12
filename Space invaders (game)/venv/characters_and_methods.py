@@ -1,15 +1,7 @@
-import math
+from bullet_file import *
 import random
+import math
 from pygame import mixer
-from defaults import *
-
-class MyBullet:
-    def __init__(self, imgFile):
-        self.img = pygame.image.load(imgFile)  # .convert() 10*30
-        self.X = 0
-        self.Y = 7 * (SCREEN_HEIGHT / 8) - 30
-        self.isShooted = False
-        self.Y_change = 0
 
 
 class MyPlayer:
@@ -66,6 +58,22 @@ class MyEnemy:
         self.vertices = list()
         # print(self.enemyImg)
 
+    def enemyMovement(self):
+        if self.X < 0:
+            self.X = 0
+            self.X_change = 0.3
+            self.Y += self.Y_change
+        if self.X > SCREEN_WIDTH - 48:
+            self.X = SCREEN_WIDTH - 48
+            self.X_change = - 0.3
+            self.Y += self.Y_change
+        if self.Y + 48 >= BOUNDARY_HEIGHT:
+            global GAMEOVER
+            GAMEOVER = True
+
+        self.X += self.X_change
+        SCREEN.blit(self.img, (self.X, self.Y))
+
     def calculate_points(self, p1, p2):
         all = list()
         factor = 0.1
@@ -84,7 +92,7 @@ class MyEnemy:
         return all
 
     def shoot(self):
-        if self.isShooted == False:
+        if self.isShooted == False and random.randint(1, 1000) == 5:
             self.isShooted = True
             p1 = (self.X + 24, self.Y + 48)
             p2 = (PLAYER.X + 24, SCREEN_HEIGHT)
@@ -100,24 +108,9 @@ class MyEnemy:
                 self.flag = 0
                 self.isShooted = False
 
-    def enemyMovement(self):
-        if self.X < 0:
-            self.X = 0
-            self.X_change = 0.3
-            self.Y += self.Y_change
-        if self.X > SCREEN_WIDTH - 48:
-            self.X = SCREEN_WIDTH - 48
-            self.X_change = - 0.3
-            self.Y += self.Y_change
-        if self.Y + 48 >= BOUNDARY_HEIGHT:
-            global GAMEOVER
-            GAMEOVER = True
-
-        self.X += self.X_change
-        SCREEN.blit(self.img, (self.X, self.Y))
-
 
 ENEMYS = list()
+
 for i in range(1, 5):
     e = MyEnemy(i)
     ENEMYS.append(e)
@@ -149,11 +142,8 @@ def enemyHit():
             e.X = 48
             e.Y = 1 * SCREEN_HEIGHT / 8
             e.X_change = 0.3
+            global POINTS
             POINTS += 1
-
-
-def getPoints():
-    return str(POINTS)
 
 
 def isCollidedEnemy(A, B):
@@ -170,7 +160,7 @@ def isCollidedEnemy(A, B):
     SCREEN.blit(bulletX, (0, 40))
     SCREEN.blit(enemyX, (0, 60))
     pygame.draw.line(SCREEN, (255, 0, 0), (A[0], A[1]), (B[0], B[1]))
-    '''
+    # '''
     if math.ceil(distance) == 24:
         # print("distance is ", distance)
         return True
@@ -181,7 +171,7 @@ def isCollidedEnemy(A, B):
 def PlayerHit():
     for e in ENEMYS:
         if isCollidedPlayer((e.BULLET.X + 8, e.BULLET.Y + 8), (PLAYER.X + 24, PLAYER.Y + 24)):
-            print('player hit')
+            # print('player hit')
             global GAMEOVER
             GAMEOVER = True
 
@@ -189,21 +179,50 @@ def PlayerHit():
 def isCollidedPlayer(A, B):
     distance = math.sqrt(math.pow(A[0] - B[0], 2) + math.pow(A[1] - B[1], 2))
     # pygame.draw.line(SCREEN, (0, 0, 255), (A[0], A[1]), (B[0], B[1]))
-    if math.ceil(distance) == 32:
+    if math.ceil( distance) == 32:
         return True
     else:
         return False
 
 
+def getPoints():
+    return str(POINTS)
+
+
 def isGameOver():
     return GAMEOVER
 
+
 def GameOverProcedure():
+    if not hasattr(GameOverProcedure, "played"):
+        GameOverProcedure.played = False
+
     for e in ENEMYS:
         e.Y = -100
         e.X_change = 0
         e.flag = float('inf')
         e.vertices = list()
         e.BULLET.Y
-    shipBlastSound = mixer.Sound('src/music/explosion.wav')
-    shipBlastSound.play()
+
+    if GameOverProcedure.played == False:
+        shipBlastSound = mixer.Sound('src/music/explosion.wav')
+        shipBlastSound.play()
+        GameOverProcedure.played = True
+
+
+def retry():
+    global GAMEOVER
+    GAMEOVER = False
+
+    global POINTS
+    POINTS = 0
+
+    global ENEMYS
+    ENEMYS = list()
+    for i in range(1, 5):
+        e = MyEnemy(i)
+        ENEMYS.append(e)
+
+    GameOverProcedure.played = False
+    # global PLAYER
+    # PLAYER = MyPlayer()
