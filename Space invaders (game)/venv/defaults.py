@@ -1,6 +1,5 @@
 import pygame
 
-
 # initialize the pygame
 pygame.init()
 
@@ -16,11 +15,11 @@ SCREEN = pygame.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])  # pass a list
 
 # Title and Icon
 pygame.display.set_caption("space invaders by PIYU")
-icon = pygame.image.load('src/icon.png')
+icon = pygame.image.load('src/images/icon.png')
 pygame.display.set_icon(icon)
 
 # background
-backgroundImg = pygame.image.load('src/BG.png').convert()
+backgroundImg = pygame.image.load('src/images/BG.png').convert()
 
 # boundary
 BOUNDARY_HEIGHT = 7 * (SCREEN_HEIGHT / 8) - 60

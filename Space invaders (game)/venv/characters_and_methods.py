@@ -7,11 +7,11 @@ from pygame import mixer
 class MyPlayer:
 
     def __init__(self):
-        self.playerImg = pygame.image.load('src/player.png')  # .convert()  don't convert it
+        self.playerImg = pygame.image.load('src/images/player.png')  # .convert()  don't convert it
         self.X = SCREEN_WIDTH / 2
         self.Y = 7 * SCREEN_HEIGHT / 8
         self.X_change = 0
-        self.BULLET = MyBullet('src/bullet.png')
+        self.BULLET = MyBullet('src/images/bullet.png')
 
     def playerMovement(self):
         self.X += self.X_change
@@ -47,12 +47,12 @@ PLAYER = MyPlayer()
 
 class MyEnemy:
     def __init__(self, enemy_number):
-        self.img = pygame.image.load('src/enemy' + str(enemy_number) + '_48x48.png')
+        self.img = pygame.image.load('src/images/enemy' + str(enemy_number) + '_48x48.png')
         self.X = random.randint(0, SCREEN_WIDTH - 50)
         self.Y = 1 * SCREEN_HEIGHT / 8
         self.X_change = 0.3
         self.Y_change = 50
-        self.BULLET = MyBullet('src/enemy_fire.png')
+        self.BULLET = MyBullet('src/images/enemy_fire.png')
         self.isShooted = False
         self.flag = 0
         self.vertices = list()
@@ -179,7 +179,7 @@ def PlayerHit():
 def isCollidedPlayer(A, B):
     distance = math.sqrt(math.pow(A[0] - B[0], 2) + math.pow(A[1] - B[1], 2))
     # pygame.draw.line(SCREEN, (0, 0, 255), (A[0], A[1]), (B[0], B[1]))
-    if math.ceil( distance) == 32:
+    if math.ceil(distance) == 32:
         return True
     else:
         return False

@@ -8,3 +8,4 @@ class MyBullet:
         self.Y = 7 * (SCREEN_HEIGHT / 8) - 30
         self.isShooted = False
         self.Y_change = 0
+        self.error = ''
